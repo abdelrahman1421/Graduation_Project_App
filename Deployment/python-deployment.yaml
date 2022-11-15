@@ -20,5 +20,7 @@ spec:
           image: engboda/iti:latest
           ports:
             - containerPort: 8080
-          
+          env:
+            - name: REDIS_HOST
+              value: redis-service
          
