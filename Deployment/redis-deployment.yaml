@@ -1,10 +1,10 @@
+---
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: redis-deployment
 spec:
-  replicas: 2
+  replicas: 23
   selector:
     matchLabels:
       app: iti-backend
