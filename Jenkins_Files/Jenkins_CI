@@ -1,0 +1,60 @@
+pipeline {
+  agent {
+    kubernetes {
+      yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: buildah
+spec:
+  containers:
+  - name: buildah
+    image: quay.io/buildah/stable:v1.23.1
+    command:
+    - cat
+    tty: true
+    securityContext:
+      privileged: true
+    volumeMounts:
+      - name: varlibcontainers
+        mountPath: /var/lib/containers
+  volumes:
+    - name: varlibcontainers
+'''   
+    }
+  }
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    disableConcurrentBuilds()
+  }
+  environment {
+    dockerhub=credentials('dockerhub')
+  }
+  stages {
+    stage('Image Build') {
+      steps {
+        container('buildah') {
+          sh 'buildah build -t engboda/myapp:${BUILD_NUMBER} .'
+        }
+      }
+    }
+    stage('Login and Push Docker Hub') {
+      steps {
+        container('buildah') {
+          sh 'echo $dockerhub_PSW | buildah login -u $dockerhub_USR --password-stdin docker.io'
+          sh 'buildah push engboda/myapp:${BUILD_NUMBER}'
+        }
+      }
+    }
+         
+  }
+  post {
+    always {
+      container('buildah') {
+        sh 'buildah logout docker.io'
+      }
+    }
+    
+  }
+}
