@@ -1,0 +1,49 @@
+pipeline {
+  agent {
+    kubernetes {
+      yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cloud-sdk
+spec:
+  containers:
+  - name: cloud-sdk
+    image:  google/cloud-sdk
+    command:
+    - cat
+    tty: true
+    securityContext:
+      privileged: true
+    volumeMounts:
+      - name: varlibcontainers
+        mountPath: /var/lib/containers
+  volumes:
+    - name: varlibcontainers
+'''   
+    }
+  }
+  environment {
+    CLOUDSDK_CORE_PROJECT='abde-367812'
+    CLIENT_EMAIL='project-service-account@abde-367812.iam.gserviceaccount.com'
+  }
+  stages {
+    stage('Deployment on GKE') {
+      steps {
+        container('cloud-sdk') {
+        withCredentials([file(credentialsId: 'Service-Account-Cred', variable: 'GC_KEY')]) {
+          sh '''
+            gcloud auth activate-service-account --key-file="$GC_KEY"
+            apt-get install google-cloud-sdk-app-engine-java kubectl -y
+            gcloud container clusters get-credentials private-cluster --zone us-central1-a --project abde-367812
+            kubectl apply -f ./Deployment/python-deployment.yaml -n production
+            kubectl apply -f ./Deployment/redis-deployment.yaml -n production
+            kubectl apply -f ./Deployment/redis-service.yaml -n production
+            kubectl apply -f ./Deployment/loadbalancer.yaml -n production
+          '''
+        }
+      }
+      }
+    }
+  }
+}

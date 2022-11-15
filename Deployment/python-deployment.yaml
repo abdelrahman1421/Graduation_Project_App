@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: graduation
-          image: engboda/iti:latest
+          image: engboda/iti_graduation
           ports:
             - containerPort: 8080
           env:
