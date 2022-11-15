@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: graduation
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: iti
+      
+  template:
+    metadata:
+      labels:
+        app: iti
+    spec:
+      containers:
+        - name: graduation
+          image: engboda/myapp:latest
+          ports:
+            - containerPort: 8080
+         
