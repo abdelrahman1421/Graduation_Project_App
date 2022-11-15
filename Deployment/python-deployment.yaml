@@ -8,16 +8,17 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: iti
+      app: iti-frontend
       
   template:
     metadata:
       labels:
-        app: iti
+        app: iti-frontend
     spec:
       containers:
         - name: graduation
-          image: engboda/myapp:latest
+          image: engboda/iti:latest
           ports:
             - containerPort: 8080
+          
          
