@@ -39,7 +39,7 @@ spec:
         }
       }
     }
-    stage('Login and Push Docker Hub') {
+    stage('Login and Push DockerHub') {
       steps {
         container('buildah') {
           sh 'echo $dockerhub_PSW | buildah login -u $dockerhub_USR --password-stdin docker.io'
