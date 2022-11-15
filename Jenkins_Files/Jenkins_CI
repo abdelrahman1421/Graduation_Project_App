@@ -35,7 +35,7 @@ spec:
     stage('Image Build') {
       steps {
         container('buildah') {
-          sh 'buildah build -t engboda/myapp:${BUILD_NUMBER} .'
+          sh 'buildah build -t engboda/iti_graduation:${BUILD_NUMBER} .'
         }
       }
     }
@@ -43,7 +43,7 @@ spec:
       steps {
         container('buildah') {
           sh 'echo $dockerhub_PSW | buildah login -u $dockerhub_USR --password-stdin docker.io'
-          sh 'buildah push engboda/myapp:${BUILD_NUMBER}'
+          sh 'buildah push engboda/iti_graduation:${BUILD_NUMBER}'
         }
       }
     }
