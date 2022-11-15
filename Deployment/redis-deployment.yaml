@@ -14,7 +14,7 @@ spec:
         app: iti-backend
     spec:
       containers:
-        - name: redis
+        - name: redis-backend-server
           image: redis
           ports: 
             - containerPort: 6379

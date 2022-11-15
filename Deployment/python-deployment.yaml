@@ -22,5 +22,5 @@ spec:
             - containerPort: 8080
           env:
             - name: REDIS_HOST
-              value: redis-service
+              value: backend-service
          
