@@ -1,0 +1,153 @@
+Started by user Jenkins Admin
+Obtained Jenkins_Files/Jenkins_CD from git https://github.com/abdelrahman1421/Graduation_Project_App.git
+[Pipeline] Start of Pipeline
+[Pipeline] podTemplate
+[Pipeline] {
+[Pipeline] node
+Created Pod: kubernetes jenkins/jenkins-cd-2-0gnmk-2zmqn-nwhmq
+Still waiting to schedule task
+‘jenkins-cd-2-0gnmk-2zmqn-nwhmq’ is offline
+Agent jenkins-cd-2-0gnmk-2zmqn-nwhmq is provisioned from template Jenkins_CD_2-0gnmk-2zmqn
+---
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  annotations:
+    buildUrl: "http://jenkins-master.jenkins.svc.cluster.local:8080/job/Jenkins_CD/2/"
+    runUrl: "job/Jenkins_CD/2/"
+  labels:
+    jenkins/label-digest: "b765bdbe14c6768a3b09831bf1ee0da8e30056f5"
+    jenkins/jenkins-master-jenkins-agent: "true"
+    jenkins/label: "Jenkins_CD_2-0gnmk"
+  name: "jenkins-cd-2-0gnmk-2zmqn-nwhmq"
+  namespace: "jenkins"
+spec:
+  containers:
+  - command:
+    - "cat"
+    image: "google/cloud-sdk"
+    name: "cloud-sdk"
+    securityContext:
+      privileged: true
+    tty: true
+    volumeMounts:
+    - mountPath: "/var/lib/containers"
+      name: "varlibcontainers"
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - env:
+    - name: "JENKINS_SECRET"
+      value: "********"
+    - name: "JENKINS_TUNNEL"
+      value: "jenkins-master-agent.jenkins.svc.cluster.local:50000"
+    - name: "JENKINS_AGENT_NAME"
+      value: "jenkins-cd-2-0gnmk-2zmqn-nwhmq"
+    - name: "JENKINS_NAME"
+      value: "jenkins-cd-2-0gnmk-2zmqn-nwhmq"
+    - name: "JENKINS_AGENT_WORKDIR"
+      value: "/home/jenkins/agent"
+    - name: "JENKINS_URL"
+      value: "http://jenkins-master.jenkins.svc.cluster.local:8080/"
+    image: "jenkins/inbound-agent:4.11-1-jdk11"
+    name: "jnlp"
+    resources:
+      limits: {}
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  nodeSelector:
+    kubernetes.io/os: "linux"
+  restartPolicy: "Never"
+  volumes:
+  - name: "varlibcontainers"
+  - emptyDir:
+      medium: ""
+    name: "workspace-volume"
+
+Running on jenkins-cd-2-0gnmk-2zmqn-nwhmq in /home/jenkins/agent/workspace/Jenkins_CD
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/abdelrahman1421/Graduation_Project_App.git
+ > git init /home/jenkins/agent/workspace/Jenkins_CD # timeout=10
+Fetching upstream changes from https://github.com/abdelrahman1421/Graduation_Project_App.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+ > git fetch --tags --force --progress -- https://github.com/abdelrahman1421/Graduation_Project_App.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/abdelrahman1421/Graduation_Project_App.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision ba2a07be142412aedc46bd0bbfa4c80e089ccf9f (refs/remotes/origin/master)
+Commit message: "Syntax error"
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f ba2a07be142412aedc46bd0bbfa4c80e089ccf9f # timeout=10
+ > git rev-list --no-walk 72046be984ecf91f1375da06d718e3e9fe346187 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Deployment on GKE)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $GC_KEY
+[Pipeline] {
+[Pipeline] sh
++ gcloud auth activate-service-account --key-file=****
+Activated service account credentials for: [iti-service-account@abde-367812.iam.gserviceaccount.com]
++ apt-get install google-cloud-sdk-app-engine-java kubectl -y
+Reading package lists...
+Building dependency tree...
+Reading state information...
+google-cloud-sdk-app-engine-java is already the newest version (410.0.0-0).
+kubectl is already the newest version (1.25.4-00).
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
++ gcloud container clusters get-credentials project-cluster --zone us-central1-a --project abde-367812
+Fetching cluster endpoint and auth data.
+kubeconfig entry generated for project-cluster.
++ kubectl apply -f ./Deployment/python-deployment.yaml -n production
+W1116 07:10:47.737840      54 gcp.go:119] WARNING: the gcp auth plugin is deprecated in v1.22+, unavailable in v1.26+; use gcloud instead.
+To learn more, consult https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+deployment.apps/graduation created
++ kubectl apply -f ./Deployment/redis-deployment.yaml -n production
+W1116 07:10:50.770886      81 gcp.go:119] WARNING: the gcp auth plugin is deprecated in v1.22+, unavailable in v1.26+; use gcloud instead.
+To learn more, consult https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+deployment.apps/redis-deployment created
++ kubectl apply -f ./Deployment/redis-service.yaml -n production
+W1116 07:10:51.131007      86 gcp.go:119] WARNING: the gcp auth plugin is deprecated in v1.22+, unavailable in v1.26+; use gcloud instead.
+To learn more, consult https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+service/backend-service created
++ kubectl apply -f ./Deployment/loadbalancer.yaml -n production
+W1116 07:10:52.354516      91 gcp.go:119] WARNING: the gcp auth plugin is deprecated in v1.22+, unavailable in v1.26+; use gcloud instead.
+To learn more, consult https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+service/app-load-balancer created
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // podTemplate
+[Pipeline] End of Pipeline
+Finished: SUCCESS

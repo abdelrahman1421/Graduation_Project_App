@@ -1,0 +1,237 @@
+Started by user Jenkins Admin
+Obtained Jenkins_Files/Jenkins_CI from git https://github.com/abdelrahman1421/Graduation_Project_App.git
+[Pipeline] Start of Pipeline
+[Pipeline] podTemplate
+[Pipeline] {
+[Pipeline] node
+Created Pod: kubernetes jenkins/jenkins-ci-2-bvsg0-f0njp-j3z09
+Still waiting to schedule task
+‘jenkins-ci-2-bvsg0-f0njp-j3z09’ is offline
+Agent jenkins-ci-2-bvsg0-f0njp-j3z09 is provisioned from template Jenkins_CI_2-bvsg0-f0njp
+---
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  annotations:
+    buildUrl: "http://jenkins-master.jenkins.svc.cluster.local:8080/job/Jenkins_CI/2/"
+    runUrl: "job/Jenkins_CI/2/"
+  labels:
+    jenkins/label-digest: "e528a33df3e7f7337cc2f90019b1f9b910d923dd"
+    jenkins/jenkins-master-jenkins-agent: "true"
+    jenkins/label: "Jenkins_CI_2-bvsg0"
+  name: "jenkins-ci-2-bvsg0-f0njp-j3z09"
+  namespace: "jenkins"
+spec:
+  containers:
+  - command:
+    - "cat"
+    image: "quay.io/buildah/stable:v1.23.1"
+    name: "buildah"
+    securityContext:
+      privileged: true
+    tty: true
+    volumeMounts:
+    - mountPath: "/var/lib/containers"
+      name: "varlibcontainers"
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - env:
+    - name: "JENKINS_SECRET"
+      value: "********"
+    - name: "JENKINS_TUNNEL"
+      value: "jenkins-master-agent.jenkins.svc.cluster.local:50000"
+    - name: "JENKINS_AGENT_NAME"
+      value: "jenkins-ci-2-bvsg0-f0njp-j3z09"
+    - name: "JENKINS_NAME"
+      value: "jenkins-ci-2-bvsg0-f0njp-j3z09"
+    - name: "JENKINS_AGENT_WORKDIR"
+      value: "/home/jenkins/agent"
+    - name: "JENKINS_URL"
+      value: "http://jenkins-master.jenkins.svc.cluster.local:8080/"
+    image: "jenkins/inbound-agent:4.11-1-jdk11"
+    name: "jnlp"
+    resources:
+      limits: {}
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  nodeSelector:
+    kubernetes.io/os: "linux"
+  restartPolicy: "Never"
+  volumes:
+  - name: "varlibcontainers"
+  - emptyDir:
+      medium: ""
+    name: "workspace-volume"
+
+Running on jenkins-ci-2-bvsg0-f0njp-j3z09 in /home/jenkins/agent/workspace/Jenkins_CI
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/abdelrahman1421/Graduation_Project_App.git
+ > git init /home/jenkins/agent/workspace/Jenkins_CI # timeout=10
+Fetching upstream changes from https://github.com/abdelrahman1421/Graduation_Project_App.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+ > git fetch --tags --force --progress -- https://github.com/abdelrahman1421/Graduation_Project_App.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/abdelrahman1421/Graduation_Project_App.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision 72046be984ecf91f1375da06d718e3e9fe346187 (refs/remotes/origin/master)
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 72046be984ecf91f1375da06d718e3e9fe346187 # timeout=10
+Commit message: "Sytanx error"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $dockerhub or $dockerhub_PSW
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Image Build)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
++ buildah build -t engboda/iti_graduation .
+STEP 1/14: FROM python:3.8
+Resolved "python" as an alias (/etc/containers/registries.conf.d/000-shortnames.conf)
+Trying to pull docker.io/library/python:3.8...
+Getting image source signatures
+Copying blob sha256:884b144bec286b456b1cd694ccd6adc07c3619b3b84069c4ec575fe213e94a7e
+Copying blob sha256:a8ca11554fce00d9177da2d76307bdc06df7faeb84529755c648ac4886192ed1
+Copying blob sha256:e4e46864aba2e62ba7c75965e4aa33ec856ee1b1074dda6b478101c577b63abd
+Copying blob sha256:c85a0be79bfba309d1f05dc40b447aa82b604593531fed1e7e12e4bef63483a5
+Copying blob sha256:157f16ed0a0c119e5015d22d95fd158bf9e85654611b870b79cca3987442948b
+Copying blob sha256:195ea6a58ca87a18477965a6e6a8623112bde82c5b568a29c56ce4581b6e6695
+Copying blob sha256:195ea6a58ca87a18477965a6e6a8623112bde82c5b568a29c56ce4581b6e6695
+Copying blob sha256:e4e46864aba2e62ba7c75965e4aa33ec856ee1b1074dda6b478101c577b63abd
+Copying blob sha256:c85a0be79bfba309d1f05dc40b447aa82b604593531fed1e7e12e4bef63483a5
+Copying blob sha256:a8ca11554fce00d9177da2d76307bdc06df7faeb84529755c648ac4886192ed1
+Copying blob sha256:884b144bec286b456b1cd694ccd6adc07c3619b3b84069c4ec575fe213e94a7e
+Copying blob sha256:157f16ed0a0c119e5015d22d95fd158bf9e85654611b870b79cca3987442948b
+Copying blob sha256:8f3927bafdf36ffbfb6a123c26b4987a63c0cab7ff3c4466247554e6cc978652
+Copying blob sha256:f53d27ef4a90037298b4dcfcdee7272a830e15c28c37a75768643c9731a34218
+Copying blob sha256:8f3927bafdf36ffbfb6a123c26b4987a63c0cab7ff3c4466247554e6cc978652
+Copying blob sha256:f53d27ef4a90037298b4dcfcdee7272a830e15c28c37a75768643c9731a34218
+Copying blob sha256:71da75e26ffc045d3288040e8de6d417b005b93091d86c1999e00d2dd35d4db0
+Copying blob sha256:71da75e26ffc045d3288040e8de6d417b005b93091d86c1999e00d2dd35d4db0
+Copying config sha256:393db26890f92f01fa3f0f7910aaae6d6fcb5abcd7a7d15a248bcadf0e763cda
+Writing manifest to image destination
+Storing signatures
+STEP 2/14: RUN mkdir /app
+STEP 3/14: WORKDIR /app
+STEP 4/14: COPY requirements.txt requirements.txt
+STEP 5/14: RUN pip install -r requirements.txt
+Collecting redis==3.0.1
+  Downloading redis-3.0.1-py2.py3-none-any.whl (61 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.8/61.8 KB 3.3 MB/s eta 0:00:00
+Collecting tornado==5.1.1
+  Downloading tornado-5.1.1.tar.gz (516 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 516.8/516.8 KB 16.5 MB/s eta 0:00:00
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Building wheels for collected packages: tornado
+  Building wheel for tornado (setup.py): started
+  Building wheel for tornado (setup.py): finished with status 'done'
+  Created wheel for tornado: filename=tornado-5.1.1-cp38-cp38-linux_x86_64.whl size=457523 sha256=134efcea40d2eebbfcd7da3fc5de276dc5493c7d01611f3d5d4c2d7d5b04fdb2
+  Stored in directory: /root/.cache/pip/wheels/25/a1/e3/b0d37c6c451fc21f290cf026f6352382e6cbced32dc3f6a37a
+Successfully built tornado
+Installing collected packages: tornado, redis
+Successfully installed redis-3.0.1 tornado-5.1.1
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+WARNING: You are using pip version 22.0.4; however, version 22.3.1 is available.
+You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+STEP 6/14: COPY . .
+STEP 7/14: ENV ENVIRONMENT=DEV
+STEP 8/14: ENV HOST=localhost
+STEP 9/14: ENV PORT=8080
+STEP 10/14: ENV REDIS_HOST=localhost
+STEP 11/14: ENV REDIS_PORT=6379
+STEP 12/14: ENV REDIS_DB=0
+STEP 13/14: EXPOSE 8080
+STEP 14/14: CMD ["python", "hello.py"]
+COMMIT engboda/iti_graduation
+Getting image source signatures
+Copying blob sha256:ccba29d6937047c719a6c048a7038d3907590fbb8556418d119469b2ad4f95bc
+Copying blob sha256:f1c1f22985847a54884b1448b7e41f2852c7f4fab4b71014ba38cc2990cdc9f1
+Copying blob sha256:80231db1194c4e9941e3c4e00c704f527889863ea2222b691ff7f8583b912aa0
+Copying blob sha256:89c3244a87b279c98478c9248c9cbfba18ca16866e38c54f0134b31bbfd3ab27
+Copying blob sha256:397a239a053b413598cddc58b15a61547b3b2c1c81242ce124287cb9c37f15ca
+Copying blob sha256:e6e9854ca9998c22dcdcdb1490276d022fa5da8759e1c6d0d7260ea8d638fe8e
+Copying blob sha256:159c88093839266126e5f4dc7cb57c677fd00bd72f20cfbf55e4d2ab90677b1e
+Copying blob sha256:2a83e40fce9c25568fd9b2f342a9aa5553a9afd82f66100d3e48c8b3c64e2eea
+Copying blob sha256:87319f4b3483383a23c754cea85745c7d8f80f278c5ba82a5abcd07b4dfc0886
+Copying blob sha256:1bf3e29a1420711c52a41b539c881f528a134a926d5c26d4398432b048cbdcc8
+Copying config sha256:39ff26aeb85c3df632b728eb12dc5c0d956e8b376f2c8643f969009bdee258ff
+Writing manifest to image destination
+Storing signatures
+--> 39ff26aeb85
+Successfully tagged localhost/engboda/iti_graduation:latest
+39ff26aeb85c3df632b728eb12dc5c0d956e8b376f2c8643f969009bdee258ff
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Login and Push DockerHub)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
++ buildah login -u engboda --password-stdin docker.io
++ echo ****
+Login Succeeded!
+[Pipeline] sh
++ buildah push engboda/iti_graduation
+Getting image source signatures
+Copying blob sha256:ccba29d6937047c719a6c048a7038d3907590fbb8556418d119469b2ad4f95bc
+Copying blob sha256:f1c1f22985847a54884b1448b7e41f2852c7f4fab4b71014ba38cc2990cdc9f1
+Copying blob sha256:89c3244a87b279c98478c9248c9cbfba18ca16866e38c54f0134b31bbfd3ab27
+Copying blob sha256:e6e9854ca9998c22dcdcdb1490276d022fa5da8759e1c6d0d7260ea8d638fe8e
+Copying blob sha256:80231db1194c4e9941e3c4e00c704f527889863ea2222b691ff7f8583b912aa0
+Copying blob sha256:397a239a053b413598cddc58b15a61547b3b2c1c81242ce124287cb9c37f15ca
+Copying blob sha256:1bf3e29a1420711c52a41b539c881f528a134a926d5c26d4398432b048cbdcc8
+Copying blob sha256:2a83e40fce9c25568fd9b2f342a9aa5553a9afd82f66100d3e48c8b3c64e2eea
+Copying blob sha256:87319f4b3483383a23c754cea85745c7d8f80f278c5ba82a5abcd07b4dfc0886
+Copying blob sha256:159c88093839266126e5f4dc7cb57c677fd00bd72f20cfbf55e4d2ab90677b1e
+Copying config sha256:39ff26aeb85c3df632b728eb12dc5c0d956e8b376f2c8643f969009bdee258ff
+Writing manifest to image destination
+Storing signatures
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
++ buildah logout docker.io
+Removed login credentials for docker.io
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // podTemplate
+[Pipeline] End of Pipeline
+Triggering a new build of Jenkins_CD #1
+Finished: SUCCESS
