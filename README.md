@@ -208,7 +208,9 @@ echo http://$SERVICE_IP:8080/login
     enter your CI pipeline name fro me `Jenkins_CI` then chose `Trigger only if build is stable`
 - Deploy our Application in GKE
   ![Screenshot from 2022-11-16 08-18-31](https://user-images.githubusercontent.com/73159522/202099535-308a701f-9994-40ac-b56b-d6d8e7c0f810.png)
-  
+ 
+ ![Screenshot from 2022-11-16 09-35-02](https://user-images.githubusercontent.com/73159522/202116297-d761ec81-8179-4567-84f6-1fc96775c963.png)
+
   
   ![Screenshot from 2022-11-16 09-15-03](https://user-images.githubusercontent.com/73159522/202114927-69e514bb-2abb-4455-9115-286fe8bcf468.png)
   
