@@ -219,7 +219,7 @@ echo http://$SERVICE_IP:8080/login
 ## Final Result
 ![Screenshot from 2022-11-16 09-12-25](https://user-images.githubusercontent.com/73159522/202110922-16701eb3-6311-4cf7-8450-25c2e903e3fa.png)
 
-## Final Part: Clean up 💣
+## Clean Up Project
 ```
 cd terraform
 terraform destroy
