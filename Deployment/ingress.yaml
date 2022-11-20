@@ -41,7 +41,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: jenkins
+            name: jenkins-service
             port:
               number: 8080
       - path: /app
