@@ -7,8 +7,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: iti-frontend
-      
+      app: iti-frontend 
   template:
     metadata:
       labels:
@@ -18,7 +17,7 @@ spec:
         - name: graduation
           image: engboda/iti_graduation
           ports:
-            - containerPort: 8080
+            - containerPort: 8000
           env:
             - name: REDIS_HOST
               value: backend-service

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+        - name: jenkins
+          image: engboda/jenkins-master:v1
+          ports:
+            - name: jenkinsport
+              containerPort: 8080
+          volumeMounts:
+            - name: jenkins-data
+              mountPath: /var/jenkins_home
+
+            - name: docker
+              mountPath: /usr/bin/docker
+              subPath: docker
+            
+            - name: dockersock
+              mountPath: /var/run/docker.sock      
+      initContainers:
+        - name: init-docker
+          image: docker
+          command: ["cp","/usr/local/bin/docker", "/opt/temp2"]    
+            
+          volumeMounts:  
+            - name: docker
+              mountPath: /opt/temp2
+ 
+        
+      volumes:
+        - name: jenkins-data
+          emptyDir: {}
+
+        - name: docker
+          emptyDir: {}
+        
+        - name: dockersock
+          hostPath:
+            path: /var/run/docker.sock
+
+---
+
+  
